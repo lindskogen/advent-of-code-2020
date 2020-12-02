@@ -17,8 +17,11 @@ data class Password(val min: Int, val max: Int, val ch: Char, val string: String
     }
 
     companion object {
+        private val regex = Pattern.compile("(-| |: )")!!
+
         fun parse(string: String): Password {
-            val parts = string.split(Pattern.compile("(-| |: )"))
+
+            val parts = string.split(regex)
 
             return Password(
                 Integer.parseInt(parts[0]),

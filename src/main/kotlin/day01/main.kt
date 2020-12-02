@@ -1,3 +1,5 @@
+package day01
+
 import java.io.File
 import kotlin.time.measureTimedValue
 
@@ -17,7 +19,7 @@ private fun solve(nums: List<Int>) {
     for (i in nums.indices) {
         for (j in i until nums.size) {
             if (nums[i] + nums[j] == 2020) {
-                println("Found 2: ${nums[i] * nums[j]}")
+                println("Part 1: ${nums[i] * nums[j]}")
                 found2 = true
                 if (found3) {
                     return
@@ -26,7 +28,7 @@ private fun solve(nums: List<Int>) {
 
             for (k in j until nums.size) {
                 if (nums[i] + nums[j] + nums[k] == 2020) {
-                    println("Found 3: ${nums[i] * nums[j] * nums[k]}")
+                    println("Part 2: ${nums[i] * nums[j] * nums[k]}")
                     found3 = true
                     if (found2) {
                         return

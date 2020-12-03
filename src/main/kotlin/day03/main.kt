@@ -4,13 +4,13 @@ import java.io.File
 import kotlin.time.measureTimedValue
 
 
-fun traverseMap(dx: Int, dy: Int, map: List<CharArray>): Long {
+fun traverseMap(dx: Int, dy: Int, map: List<String>): Long {
     var x = 0
     var y = 0
     var numTrees = 0L
 
     while (y < map.size) {
-        if (map[y][x % map[y].size] == '#') {
+        if (map[y][x % map[y].length] == '#') {
             numTrees += 1
         }
         x += dx
@@ -24,13 +24,13 @@ fun traverseMap(dx: Int, dy: Int, map: List<CharArray>): Long {
 @kotlin.time.ExperimentalTime
 fun main(args: Array<String>) {
     val (value, elapsed) = measureTimedValue {
-        val map = File("src/main/kotlin/day03/input").readLines().map { it.toCharArray() }
+        val map = File("src/main/kotlin/day03/input").readLines()
         solve(map)
     }
     println(elapsed)
 }
 
-private fun solve(map: List<CharArray>) {
+private fun solve(map: List<String>) {
     val x3 = traverseMap(3, 1, map)
     println("Part 1: $x3")
 

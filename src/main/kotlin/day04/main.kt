@@ -4,6 +4,22 @@ import java.io.File
 import java.util.regex.Pattern
 import kotlin.time.measureTimedValue
 
+fun String.chomp(): String {
+    return this.removeSuffix("\n")
+}
+
+fun String.splitIntoPairs(delimiters: String): Pair<String, String> {
+    val parts = this.split(delimiters, limit = 2)
+    return parts[0] to parts[1]
+}
+
+val WHITESPACE_REGEX = Pattern.compile("\\s")!!
+
+fun String.splitWhitespace(): List<String> {
+    return this.split(WHITESPACE_REGEX)
+}
+
+
 data class PassportHeight(val height: Int, val unit: String) {
 
     fun isValid(): Boolean {
@@ -36,13 +52,8 @@ class Passport(string: String) {
     private val height: PassportHeight?
 
     init {
-        val map = mutableMapOf<String, String>()
-        string.split(Pattern.compile("[ \n]")).forEach {
-            val parts = it.split(":")
-            if (parts.size == 2) {
-                map[parts[0]] = parts[1]
-            }
-        }
+        val map = string.splitWhitespace()
+            .map { it.splitIntoPairs(":") }.toMap()
 
         fields = map
         height = map["hgt"]?.let { PassportHeight.parse(it) }
@@ -79,11 +90,10 @@ class Passport(string: String) {
     }
 }
 
-
 @kotlin.time.ExperimentalTime
 fun main(args: Array<String>) {
     val (value, elapsed) = measureTimedValue {
-        val passports = File("src/main/kotlin/day04/input").readText()
+        val passports = File("src/main/kotlin/day04/input").readText().chomp()
             .split(Pattern.compile("\n\n"))
             .map { Passport(it) }
         solve(passports)

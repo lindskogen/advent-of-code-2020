@@ -34,7 +34,7 @@ data class PassportHeight(val height: Int, val unit: String) {
             }
 
             val unit = string.takeLast(2)
-            val height = Integer.parseInt(string.dropLast(2))
+            val height = string.dropLast(2).toInt()
 
             if (unit != "cm" && unit != "in") {
                 return null
@@ -66,7 +66,7 @@ class Passport(string: String) {
     fun isValidPart2(): Boolean {
         return height?.isValid() == true &&
             rangeFields.all { (key, range) ->
-                fields[key] != null && Integer.parseInt(fields[key]) in range
+                fields[key]?.toInt() in range
             } &&
             patternFields.all { (key, regex) ->
                 fields[key]?.matches(regex) == true
@@ -94,7 +94,7 @@ class Passport(string: String) {
 fun main(args: Array<String>) {
     val (value, elapsed) = measureTimedValue {
         val passports = File("src/main/kotlin/day04/input").readText().chomp()
-            .split(Pattern.compile("\n\n"))
+            .split("\n\n")
             .map { Passport(it) }
         solve(passports)
     }

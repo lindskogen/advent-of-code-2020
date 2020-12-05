@@ -4,11 +4,16 @@ import java.io.File
 import kotlin.time.measureTimedValue
 
 private fun binarySearch(string: String): Int {
-    val binaryString = string
-        .replace(Regex("[LF]"), "0")
-        .replace(Regex("[RB]"), "1")
-
-    return binaryString.toInt(2)
+    var seatId = 0
+    for (s in string) {
+        seatId *= 2
+        when (s) {
+            'R', 'B' -> {
+                seatId += 1
+            }
+        }
+    }
+    return seatId
 }
 
 private fun findMissingSeat(res: List<Int>): Int {

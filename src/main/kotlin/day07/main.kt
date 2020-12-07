@@ -13,7 +13,8 @@ fun main(args: Array<String>) {
         val (part1, part2) = parse(questions, "shiny gold")
         assertEquals(part1, 208)
         assertEquals(part2, 1664)
-        println(Pair(part1, part2))
+        println("Part 1: $part1")
+        println("Part 2: $part2")
 
     }
     println(elapsed)
@@ -66,8 +67,3 @@ private fun sumParentBags(
         sumParentBags(map2, it, set)
     }
 }
-
-//private fun solve(passports: List<String>) {
-//    println("Part 1: ${passports.sumOf { countPart1(it) }}")
-//    println("Part 2: ${passports.sumOf { countPart2(it) }}")
-//}

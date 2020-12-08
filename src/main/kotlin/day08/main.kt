@@ -61,14 +61,18 @@ private fun mutateNopJmp(instructions: List<Instruction>): Int? {
         val candidate = instructions.toMutableList()
         val (op, arg) = candidate[i]
 
-        val res = if (op == "jmp") {
-            candidate[i] = Pair("nop", arg)
-            runProgram(candidate, 0)
-        } else if (op == "nop" && arg != 0) {
-            candidate[i] = Pair("jmp", arg)
-            runProgram(candidate, 0)
-        } else {
-            null
+        val res = when {
+            op == "jmp" -> {
+                candidate[i] = Pair("nop", arg)
+                runProgram(candidate, 0)
+            }
+            op == "nop" && arg != 0 -> {
+                candidate[i] = Pair("jmp", arg)
+                runProgram(candidate, 0)
+            }
+            else -> {
+                null
+            }
         }
 
         if (res?.first == true) {

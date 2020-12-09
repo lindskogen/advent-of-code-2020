@@ -11,7 +11,7 @@ fun runProgram(program: List<Instruction>, initialAcc: Int): Pair<Boolean, Int> 
     var pc = 0
     val set = mutableSetOf<Int>()
 
-    loop@ while (pc < program.size) {
+    while (pc < program.size) {
         if (!set.add(pc)) {
             return Pair(false, acc)
         }
@@ -24,7 +24,7 @@ fun runProgram(program: List<Instruction>, initialAcc: Int): Pair<Boolean, Int> 
             }
             "jmp" -> {
                 pc += arg
-                continue@loop
+                continue
             }
         }
         pc++

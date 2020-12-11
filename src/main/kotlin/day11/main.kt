@@ -18,10 +18,10 @@ fun main(args: Array<String>) {
 }
 
 fun solve(lines: List<CharArray>, numTolerate: Int, maxVision: Int): Int {
-    var changes: Int
+    var changed: Boolean
 
     do {
-        changes = 0
+        changed = false
         val oldLines = lines.map { it.clone() }
 
         for (line in lines.indices) {
@@ -30,19 +30,19 @@ fun solve(lines: List<CharArray>, numTolerate: Int, maxVision: Int): Int {
                     'L' -> {
                         if (countOccupied(oldLines, line, seat, maxVision) == 0) {
                             lines[line][seat] = '#';
-                            changes++
+                            changed = true
                         }
                     }
                     '#' -> {
                         if (countOccupied(oldLines, line, seat, maxVision) >= numTolerate) {
                             lines[line][seat] = 'L';
-                            changes++
+                            changed = true
                         }
                     }
                 }
             }
         }
-    } while (changes > 0)
+    } while (changed)
 
     return lines.sumOf { it.count { c -> c == '#' } }
 }

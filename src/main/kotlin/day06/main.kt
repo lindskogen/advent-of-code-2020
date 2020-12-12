@@ -16,15 +16,9 @@ fun countPart1(string: String): Int {
 }
 
 fun countPart2(string: String): Int {
-    val map = mutableMapOf<Char, Int>()
-
     val people = string.split("\n").count()
 
-    for (s in string) {
-        if (s != '\n') {
-            map.compute(s) { _, c -> (c ?: 0) + 1 }
-        }
-    }
+    val map = string.groupingBy { it }.eachCount()
 
     return map.filterValues { it == people }.count()
 }

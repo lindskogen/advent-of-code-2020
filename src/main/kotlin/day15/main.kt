@@ -20,25 +20,24 @@ fun main(args: Array<String>) {
 }
 
 fun solve(nums: List<Int>, nth: Int): Int {
-    val map = mutableMapOf<Int, IntArray>()
+    val map = Array(nth) { intArrayOf(0, 0) }
     var lastNum = 0
     var turn = 1
     for (n in nums) {
-        val linkedList = intArrayOf(turn, 0)
-        map[n] = linkedList
+        map[n][0] = turn
         lastNum = n
         turn++
     }
     while (turn <= nth) {
         val n = lastNum
         val a = map[n]
-        if (a != null && a[1] != 0) {
-            lastNum = a[0] - a[1]
+        lastNum = if (a[1] != 0) {
+            a[0] - a[1]
         } else {
-            lastNum = 0
+            0
         }
 
-        val b = map.getOrPut(lastNum, { intArrayOf(0, 0) })
+        val b = map[lastNum]
         b[1] = b[0];
         b[0] = turn
 

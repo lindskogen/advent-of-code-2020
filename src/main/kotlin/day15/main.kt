@@ -2,7 +2,7 @@ package day15
 
 import day04.chomp
 import java.io.File
-import java.util.*
+import kotlin.collections.HashMap
 import kotlin.time.measureTimedValue
 
 @kotlin.time.ExperimentalTime
@@ -20,12 +20,11 @@ fun main(args: Array<String>) {
 }
 
 fun solve(nums: List<Int>, nth: Int): Int {
-    val map = mutableMapOf<Int, LinkedList<Int>>()
+    val map = mutableMapOf<Int, IntArray>()
     var lastNum = 0
     var turn = 1
     for (n in nums) {
-        val linkedList = LinkedList<Int>()
-        linkedList.add(turn)
+        val linkedList = intArrayOf(turn, 0)
         map[n] = linkedList
         lastNum = n
         turn++
@@ -33,25 +32,17 @@ fun solve(nums: List<Int>, nth: Int): Int {
     while (turn <= nth) {
         val n = lastNum
         val a = map[n]
-        if (a != null && a.size > 1) {
+        if (a != null && a[1] != 0) {
             lastNum = a[0] - a[1]
         } else {
             lastNum = 0
         }
 
-        val b = map.getOrPut(lastNum, { LinkedList<Int>() })
-        b.addFirst(turn)
-        if (b.size > 2) {
-            b.removeLast()
-        }
+        val b = map.getOrPut(lastNum, { intArrayOf(0, 0) })
+        b[1] = b[0];
+        b[0] = turn
 
         turn++
     }
     return lastNum
 }
-
-
-fun solve2(lines: List<Int>): Long {
-   return 1L
-}
-

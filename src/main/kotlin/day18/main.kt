@@ -21,8 +21,9 @@ fun hasHigherPrecedence(x: Char, y: Char): Boolean {
 }
 
 
-fun parse(line: String, isPart2: Boolean): Long {
+fun parse(line: String, isPart2: Boolean): List<String> {
     var i = 0
+    val line = line.replace(" ", "")
     val list = mutableListOf<String>()
     val stack = Stack<Char>()
 
@@ -59,10 +60,11 @@ fun parse(line: String, isPart2: Boolean): Long {
         list.add(stack.pop().toString())
     }
 
-    return eval(list)
+    return list
 }
 
-fun eval(list: MutableList<String>): Long {
+fun eval(list: List<String>): Long {
+    val list = list.toMutableList()
     val stack = Stack<String>()
 
     while (list.isNotEmpty()) {
@@ -85,13 +87,11 @@ fun eval(list: MutableList<String>): Long {
     }
 
     return stack.pop().toString().toLong()
-    // 1738812097
-    // 10328746689
 }
 
 fun solve(lines: List<String>, isPart2: Boolean): Long {
     return lines.sumOf {
-        parse(it.replace(" ", ""), isPart2)
+        eval(parse(it, isPart2))
     }
 }
 

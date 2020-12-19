@@ -53,21 +53,19 @@ fun solve(rules: List<String>, words: List<String>, isPart2: Boolean): Int {
         )
     }
 
-    return words.count {
-        matchRule(rulesMap, 0, it)
-    }
-}
+    val ruleId = 0
 
-fun matchRule(rules: Map<Int, Rule>, ruleId: Int, word: String): Boolean {
-    val diff = matchPart(rules, ruleId, word, 0).maxByOrNull { it }
-    return diff == word.length
+    return words.count { word ->
+        val diff = matchPart(rulesMap, ruleId, word).maxOrNull()
+        diff == word.length
+    }
 }
 
 private fun matchPart(
     rules: Map<Int, Rule>,
     ruleId: Int,
     word: String,
-    i: Int
+    i: Int = 0
 ): List<Int> {
     return when (val rule = rules[ruleId]) {
         is Rule.Value -> {

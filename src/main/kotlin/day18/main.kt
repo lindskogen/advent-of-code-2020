@@ -2,6 +2,7 @@ package day18
 
 import java.io.File
 import java.lang.Exception
+import java.lang.IllegalStateException
 import java.util.*
 import kotlin.time.measureTimedValue
 
@@ -62,15 +63,15 @@ fun parse(line: String, isPart2: Boolean): List<Token> {
 }
 
 private fun operatorCharToToken(c: Char) = when (c) {
-    '+' -> Token.Add()
-    '*' -> Token.Multiply()
+    '+' -> Token.Add
+    '*' -> Token.Multiply
     else -> throw Exception("No operator implemented for $c")
 }
 
-open class Token private constructor() {
+sealed class Token {
     class Value(val num: Long): Token()
-    class Add: Token()
-    class Multiply: Token()
+    object Add: Token()
+    object Multiply: Token()
 }
 
 
@@ -84,12 +85,12 @@ fun eval(list: List<Token>): Long {
             is Token.Value -> {
                 stack.push(t)
             }
-            is Token.Multiply -> {
+            Token.Multiply -> {
                 val o1 = stack.pop() as Token.Value
                 val o2 = stack.pop() as Token.Value
                 stack.push(Token.Value(o1.num * o2.num))
             }
-            is Token.Add -> {
+            Token.Add -> {
                 val o1 = stack.pop() as Token.Value
                 val o2 = stack.pop() as Token.Value
 
@@ -98,8 +99,10 @@ fun eval(list: List<Token>): Long {
         }
     }
 
-    val token = stack.pop() as Token.Value
-    return token.num
+    return when (val t = stack.pop()) {
+        is Token.Value -> t.num
+        else -> throw IllegalStateException("Value left on stack is not a value")
+    }
 }
 
 fun solve(lines: List<String>, isPart2: Boolean): Long {
